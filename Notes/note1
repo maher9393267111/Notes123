@@ -1,1 +1,106 @@
 
+
+ <Select name="month" placeholder="월" onChange={onChangeMonth}>
+              {months.map((month, index) => (
+                <Option key={`${index + 1}`}>{month}</Option>
+              ))}
+            </Select>
+            <Select name="day" placeholder="일" onChange={onChangeDay}>
+              {days.map((day, index) => (
+                <Option key={`${index + 1}`}>{day}</Option>
+              ))}
+            </Select>
+
+--------------------------------------------------------------------------------------------
+
+
+     var appointmentSchema = new Schema({
+    block_id: {type: Schema.Types.ObjectId, ref: 'blocks' },
+    buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true },
+    category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true },
+    user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true },
+    room: { type: String },
+    status: Boolean, //annehmen/ablehnen
+    urgency: { type: Boolean, default: false },
+    description: { type: String, required: true },
+    //date: { type: Date, required: true },
+    //DATA FROM FULL CALENDAR
+    title: { type: String, required: true },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+    editable: { type: Boolean, default: false },
+    overlap: { type: Boolean, default: false },
+    color: { type: String },
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
+});
+
+
+---------------------------------------------------------------
+
+
+
+const AppointmentSchema = new mongoose.Schema({
+
+    date: {type: Date, default: new Date(), required: true},
+    room: {type: String, required: true},
+    reasons: {type: String, required: true},
+
+    //Reference patient name from Patient model
+    patient: {type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true},
+
+    //Reference doctor name doctor model
+    doctor: {type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' , required: true},
+
+})
+
+--------------------------------------------------------------
+      Click to onother item clickeeee----------------
+      
+         onClick={(e) => {
+                document.querySelector(`input[name=${name}]`).click();
+              }}
+            />
+
+
+------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
