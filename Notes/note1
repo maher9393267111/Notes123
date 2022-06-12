@@ -1,76 +1,214 @@
 
-
- <Select name="month" placeholder="월" onChange={onChangeMonth}>
-              {months.map((month, index) => (
-                <Option key={`${index + 1}`}>{month}</Option>
-              ))}
-            </Select>
-            <Select name="day" placeholder="일" onChange={onChangeDay}>
-              {days.map((day, index) => (
-                <Option key={`${index + 1}`}>{day}</Option>
-              ))}
-            </Select>
-
---------------------------------------------------------------------------------------------
-
-
-     var appointmentSchema = new Schema({
-    block_id: {type: Schema.Types.ObjectId, ref: 'blocks' },
-    buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true },
-    category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true },
-    user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true },
-    room: { type: String },
-    status: Boolean, //annehmen/ablehnen
-    urgency: { type: Boolean, default: false },
-    description: { type: String, required: true },
-    //date: { type: Date, required: true },
-    //DATA FROM FULL CALENDAR
-    title: { type: String, required: true },
-    start: { type: Date, required: true },
-    end: { type: Date, required: true },
-    editable: { type: Boolean, default: false },
-    overlap: { type: Boolean, default: false },
-    color: { type: String },
-}, {
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true }
-});
-
-
----------------------------------------------------------------
+---------------- ADD PRODUCT -------------------
 
 
 
-const AppointmentSchema = new mongoose.Schema({
+ // add product
+//  const addProduct = (e) => {
+//   e.preventDefault();
+//   const storageRef = storage.ref();
+//   const uploadTask = storageRef(`product-images/${productImg.name}`).put(productImg);
+//   // uploadTask.on('state_changed', snapshot => {
+//   //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//   //     console.log(progress);
+//   // }, err => setError(err.message)
+//   //     , () => {
+//   //         storage.ref('product-images').child(productImg.name).getDownloadURL().then(url => {
+//   //             db.collection('Products').add({
+//   //                 ProductName: productName,
+//   //                 ProductPrice: Number(productPrice),
+//   //                 ProductImg: url
+//   //             }).then(() => {
+//   //                 setProductName('');
+//   //                 setProductPrice(0)
+//   //                 setProductImg('');
+//   //                 setError('');
+//   //                 document.getElementById('file').value = '';
+//   //             }).catch(err => setError(err.message))
+//   //         })
+//   //     })
+// }
 
-    date: {type: Date, default: new Date(), required: true},
-    room: {type: String, required: true},
-    reasons: {type: String, required: true},
 
-    //Reference patient name from Patient model
-    patient: {type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true},
+-=fom-------
 
-    //Reference doctor name doctor model
-    doctor: {type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' , required: true},
+  {/* <form autoComplete="off" className='form-group' onSubmit={testDownloadImages}>
+        <label htmlFor="product-name">Product Name</label>
+        <input type="text" className='form-control' required
+            onChange={(e) => setProductName(e.target.value)} value={productName} />
+        <br />
+        <label htmlFor="product-price">Product Price</label>
+        <input type="number" className='form-control' required
+            onChange={(e) => setProductPrice(e.target.value)} value={productPrice} />
+        <br />
+        <label htmlFor="product-img">Product Image</label>
+        <input type="file" className='form-control' id="file" required
+            onChange={productImgHandler} />
+        <br />
+        <button type="submit" className='btn btn-success btn-md mybtn'>ADD</button>
+    </form>
+    {error && <span className='error-msg'>{error}</span>} */}
 
-})
 
---------------------------------------------------------------
-      Click to onother item clickeeee----------------
+
+
+
++----------------------------------------------------------------------------------------------------
+
+
+                                            ----IMAGE-----
+
+    const file = e.target.files[0];
+      console.log(file);
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e:any)=>{
+          setAvatar(e.target.result);
+          
+          
+          -----------------------------------------------------------
+          
+          
+          
+          ----upload image  success single image-----
+          
+            const handleChangeImage = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    
+    const storage = getStorage();
+    const testRef = ref(storage, `myimages/${file.name}`);
+    console.log('testRef', testRef);
+    // send image file to storage with test ref info
+    await uploadBytes(testRef, file).then((snapshot) => {
+      console.log('Uploaded image to storage success!');
+    });
+
+    // get image url from storage and set into state
+    const down = await getDownloadURL(testRef);
+    setImageURL(down); 
+   
+  }
+
+-----------------------------------------------------------------------------------
+
+
+         --------------CREATE NEW COLLECTION AND ADD IMAGE AND MY NAME ----------
+         
+         
+          //send array of images to firebasestorage
+  const sendImage = async (e) => {
+    e.preventDefault();
+
+    let file = e.target.files[0];
+    // console.log(file);
+
+    setImage(URL.createObjectURL(file));
+
+
+    let data = addDoc(collection(db, "mahercOLLECTION"), {
+      image: image,
+      name:'maher gome'
+    }).then(() => {
+      console.log("Document successfully written!");
+    }
+    ).catch((error) => {
+      console.error("Error writing document: ", error);
+    }
+    );
+
+
+
+
+  };
+
+
+
+-------------------------------------------------------------------------
+
+
+
+         -----------SUB_COLLECTION CREATE------------
+         
+           const sendImage = async (e) => {
+    e.preventDefault();
+
+    let file = e.target.files[0];
+    // console.log(file);
+
+    setImage(URL.createObjectURL(file));
+
+    let data = addDoc(collection(db, "mahercOLLECTION"), {
+      image: image,
+      name: "maher gome",
+    })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+
+    // CREATE COLLECTION INSIDE ONOTher collection in firebase
+
+    const docRef = doc(db, "mahercOLLECTION", "GQd5jWXlqVebjtGu0yRI");
+    const colRef = collection(docRef, "maherinfo"); // create collection inside the doc
+    addDoc(colRef, {
+      // add doc inside the subcollection
+      price: "100",
+      and: "200",
+      more: "300",
+    });
+
+    // map like this maher collection ---> docid  ----> doc fileds and maherinfo collection ---> docid ----> doc fields
+  };
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+ -------specefic doc from collection get---------
+ 
+ await db.collection("users").doc($current_user.uid).get()
+ 
+ db.collection("app").document("users").collection(uid).document("notifications")
+
+
+
+
+
+-------------------------------------------
+
+
+           -------------UPADATE ARRAUY FIELD INSIDE  DOC INSIDE COLLECTION----------
+           
+           
+           const coinPath = doc(db, "users", `${user?.email}`);
+  const saveCoin = async () => {
+    if (user?.email) {
+      setSavedCoin(true);
+      await updateDoc(coinPath, {
+        // wishlist is array and inside it different objects
+        watchList: arrayUnion({
+          id: coin.id,
+          name: coin.name,
+          image: coin.image,
+          rank: coin.market_cap_rank,
+          symbol: coin.symbol,
+        }),
+      });
       
-         onClick={(e) => {
-                document.querySelector(`input[name=${name}]`).click();
-              }}
-            />
-
-
-------------------------------------
-
-
-
-
-
-
+      
+      ---------------------------------------------------------------------------------
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -84,6 +222,49 @@ const AppointmentSchema = new mongoose.Schema({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          
+          
+          
+          
 
 
 
