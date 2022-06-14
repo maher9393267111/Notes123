@@ -203,7 +203,28 @@
       ---------------------------------------------------------------------------------
       
       
-      
+           ________________FIND ALL POST COLLECTION DOCS_______________
+           
+           
+           import { useState,useEffect } from 'react'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from '../firebase'
+           
+           
+           const [posts, setPosts] = useState([])
+  useEffect(() => onSnapshot(
+          query(collection(db, "posts"), orderBy("timestamp", "desc")),
+          (snapshot) => {
+              setPosts(snapshot.docs)
+              console.log('posts',snapshot.docs)
+          }
+      )
+  ,[])
+
+
+
+
+----------------------------------------------------------------------------------
       
       
       
